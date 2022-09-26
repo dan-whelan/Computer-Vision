@@ -4,17 +4,15 @@
 
 #define BINARY_THRESHOLD 95
 
-
 using namespace std;
 using namespace cv;
 
-int main(int argc, char const *argv[]) {
+void MyApplication() {
     VideoCapture cap("Media/StayingInLane_MPEG4.avi");
 
     if(!cap.isOpened()) 
     {
         cout << "Error opening video stream" << endl;
-        return -1;
     }
 
     double fps = cap.get(CAP_PROP_FPS);
@@ -46,6 +44,10 @@ int main(int argc, char const *argv[]) {
             break;
         }
     }
+}
+
+int main(int argc, char const *argv[]) {
+    MyApplication();
 
     return 0;
 }
