@@ -1,0 +1,3 @@
+/Users/dwhelan/Desktop/Computer Science/Computer Vision/draughts/CMakeFiles/draughts.dir
+/Users/dwhelan/Desktop/Computer Science/Computer Vision/draughts/CMakeFiles/edit_cache.dir
+/Users/dwhelan/Desktop/Computer Science/Computer Vision/draughts/CMakeFiles/rebuild_cache.dir

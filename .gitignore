@@ -377,7 +377,7 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # VS Code files for those working on multiple tools
-.vscode/*
+./draughts.vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
@@ -396,3 +396,16 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+ 
+# CMake 
+./draughts/CMakeLists.txt.user
+./draughts/CMakeCache.txt
+./draughts/CMakeFiles
+./draughts/CMakeScripts
+./draughts/Testing
+./draughts/Makefile
+./draughts/cmake_install.cmake
+./draughts/install_manifest.txt
+./draughts/compile_commands.json
+./draughts/CTestTestfile.cmake
+./draughts/_deps
