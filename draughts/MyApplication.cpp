@@ -177,10 +177,27 @@ const int GROUND_TRUTH_FOR_DRAUGHTSGAME1_VIDEO_MOVES[][3] = {
 #define NUMBER_OF_BINS 256
 #define NUMBER_OF_TRANSFORMED_COLUMNS 400
 #define NUMBER_OF_TRANSFORMED_ROWS 400
+#define NUMBER_OF_DIFFERENT_PIECES 2
 #define WHITE_SQUARE Vec3b(0,255,0)
 #define BLACK_SQUARE Vec3b(255,0,0)
 #define WHITE_PIECE Vec3b(255,255,255)
 #define BLACK_PIECE Vec3b(0,0,255)
+#define NOTHING Vec3b(0,0,0)
+#define CENTER (NUMBER_OF_TRANSFORMED_COLUMNS/NUMBER_OF_SQUARES_ON_EACH_SIDE)/2
+
+// Amount of information collected for PDN
+#define NUMBER_OF_CONDITIONS 3
+
+// Whether the game is being played using black or white squares
+#define PIECES_ON_BLACK 0
+#define PIECES_ON_WHITE 1
+
+// Whether a piece on a given square is black or white (cue Michael Jackson)
+#define PIECE_IS_BLACK 0
+#define PIECE_IS_WHITE 1
+
+// Whether a piece is a King or not
+#define PIECE_IS_KING 1
 
 
 class DraughtsBoard
@@ -232,15 +249,16 @@ void DraughtsBoard::loadGroundTruth(string pieces, int man_type, int king_type)
 }
 
 Mat transformImage(Mat& image);
+int* determineBoardPDN(int what_squares);
 Mat detectObjects(Mat& image, Mat& sample, Scalar colour);
 
 void MyApplication()
 {
 	// Load in video, image and sample images for BackProjection
 
-	string video_filename("Media/DraughtsGame1.avi");
-	VideoCapture video;
-	video.open(video_filename);
+	// string video_filename("Media/DraughtsGame1.avi");
+	// VideoCapture video;
+	// video.open(video_filename);
 
 	int image_index = 0;
 	int pieces[32];
@@ -260,8 +278,8 @@ void MyApplication()
 	if ((black_pieces_image.empty()) || (white_pieces_image.empty()) || (black_squares_image.empty()) || (white_squares_image.empty())  || (static_background_image.empty()))
 	{
 		// Error attempting to load something.
-		if (!video.isOpened())
-			cout << "Cannot open video file: " << video_filename << endl;
+		// if (!video.isOpened())
+		// 	cout << "Cannot open video file: " << video_filename << endl;
 		if (black_pieces_image.empty())
 			cout << "Cannot open image file: " << black_pieces_filename << endl;
 		if (white_pieces_image.empty())
@@ -282,9 +300,6 @@ void MyApplication()
 
 		Mat transformed_draughts_image;
 		transformed_draughts_image = transformImage(draughts_image);
-		imshow("Transformed Image", transformed_draughts_image);
-		waitKey();
-
 
 		/* Perform a CCA of the image to detect what pixels belong to, Any of
 		*  		a) White Piece
@@ -293,30 +308,82 @@ void MyApplication()
 		*		d) Black Square
 		*		e) None of the above.
 		*/
-
-		Mat cca_draughts_board, cca_draughts_with_black_pieces, cca_draughts_game;
-
         Mat black_squares_cca = detectObjects(transformed_draughts_image, black_squares_image, Scalar(255, 0, 0));
 		Mat white_squares_cca = detectObjects(transformed_draughts_image, white_squares_image, Scalar(0, 255, 0));
-		add(black_squares_cca, white_squares_cca, cca_draughts_board);
-
 		Mat black_pieces_cca = detectObjects(transformed_draughts_image, black_pieces_image, Scalar(0, 0, 255));
 		Mat white_pieces_cca = detectObjects(transformed_draughts_image, white_pieces_image, Scalar(255, 255, 255));
 
-		//Detect Whether a Square contains a piece or not
-		Mat split_draughts_board = Mat::zeros(NUMBER_OF_TRANSFORMED_ROWS, NUMBER_OF_TRANSFORMED_COLUMNS, )
+		// Clean  CCA
+		Mat white_pieces_clean = Mat::zeros(white_pieces_cca.size(), white_pieces_cca.type());
+		Mat black_pieces_clean = Mat::zeros(black_pieces_cca.size(), black_pieces_cca.type());
 
 		for(int column = 0; column < NUMBER_OF_TRANSFORMED_COLUMNS; column++) {
 			for(int row = 0; row < NUMBER_OF_TRANSFORMED_ROWS; row++) {
-				if(cca_draughts_board.at<Vec3b>(row, column) == WHITE_SQUARE) {
-					
-				} else if(cca_draughts_board.at<Vec3b>(row, column) == BLACK_SQUARE) {
-					
-				} else {
-
+				if(black_squares_cca.at<Vec3b>(row, column) != BLACK_SQUARE && white_squares_cca.at<Vec3b>(row,column) != WHITE_SQUARE) {
+					black_squares_cca.at<Vec3b>(row, column) = BLACK_SQUARE;
 				}
 			}
 		}
+
+		for(int column = 0; column < NUMBER_OF_TRANSFORMED_COLUMNS; column++) {
+			for(int row = 0; row < NUMBER_OF_TRANSFORMED_ROWS; row++) {
+				if(white_pieces_cca.at<Vec3b>(row, column) == WHITE_PIECE && (black_squares_cca.at<Vec3b>(row, column) == BLACK_SQUARE || white_squares_cca.at<Vec3b>(row, column) != WHITE_SQUARE)) {
+					white_pieces_clean.at<Vec3b>(row, column) = WHITE_PIECE;
+				}
+			}
+		}
+
+		for(int column = 0; column < NUMBER_OF_TRANSFORMED_COLUMNS; column++) {
+			for(int row = 0; row < NUMBER_OF_TRANSFORMED_ROWS; row++) {
+				if(black_pieces_cca.at<Vec3b>(row, column) == BLACK_PIECE && (black_squares_cca.at<Vec3b>(row, column) == BLACK_SQUARE || white_squares_cca.at<Vec3b>(row, column) != WHITE_SQUARE)) {
+					black_pieces_clean.at<Vec3b>(row,column) = BLACK_PIECE;
+				}
+			}
+		}
+
+		// Set up PDN array
+		int* portable_draughts_notation;
+		portable_draughts_notation = determineBoardPDN(PIECES_ON_BLACK);
+
+		// Array containing PDN number, colour of piece, is piece King,  
+		int pdn_squares_with_pieces[NUMBER_OF_SQUARES][NUMBER_OF_CONDITIONS] = {0,0};
+
+		// Detect Whether a Square contains a white piece or not
+
+		// TODO Implement boolean to determine if piece has already been checked? 
+		// How does this work going from piece to piece?
+		// Increase Column increment to go across 8 times and rows to go one by one?
+		int is_pdn_number = 0;
+		int pdn_number = 0;
+		for(int column = 0; column < NUMBER_OF_TRANSFORMED_COLUMNS; column++) {
+			for(int row = 0; row < NUMBER_OF_TRANSFORMED_ROWS; row ++) {
+				cout << is_pdn_number << endl;
+				cout << (white_pieces_clean.at<Vec3b>(row, column) == WHITE_PIECE) << endl;
+				cout << (black_squares_cca.at<Vec3b>(row, column) == BLACK_SQUARE) << endl;
+				if(portable_draughts_notation[is_pdn_number] != 0) {
+					if(white_pieces_clean.at<Vec3b>(row, column) == WHITE_PIECE 
+							&& black_squares_cca.at<Vec3b>(row, column) == BLACK_SQUARE 
+							&& pdn_squares_with_pieces[]) {
+						pdn_squares_with_pieces[portable_draughts_notation[pdn_number]][0] = pdn_number+1;
+						pdn_squares_with_pieces[portable_draughts_notation[pdn_number]][1] = PIECE_IS_WHITE;
+						pdn_squares_with_pieces[portable_draughts_notation[pdn_number]][2] = 0;
+						pdn_number++;
+					}
+				}
+				is_pdn_number++;
+			}
+		}
+
+		for(int i = 0; i <  32; i++) {
+			cout << pdn_squares_with_pieces[i][0] << " " << pdn_squares_with_pieces[i][1] << " " << pdn_squares_with_pieces[i][2] << endl;
+		}
+
+		imshow("Black", black_squares_cca);
+		imshow("White", white_squares_cca);
+		imshow("Piece", white_pieces_clean);
+		imshow("Pieces", black_pieces_clean);
+		waitKey();
+
     }
 }
 
@@ -344,6 +411,32 @@ Mat transformImage(Mat& image) {
 	warpPerspective(image, perspective_warped_image, perspective_matrix, perspective_warped_image.size());
 
 	return perspective_warped_image;
+}
+
+int* determineBoardPDN(int what_squares) {
+	static int portable_draughts_notation[NUMBER_OF_SQUARES*2];
+	int pdn_number = 1;
+	if(what_squares == PIECES_ON_BLACK) {
+		for(int i = 0; i < sizeof(portable_draughts_notation); i++) {
+			if(i % 2 != 0) {
+				portable_draughts_notation[i] = pdn_number;
+				pdn_number++;
+			} else {
+				portable_draughts_notation[i] = 0;
+			}
+		}
+	}
+	else {
+		for(int i = 0; i < sizeof(portable_draughts_notation); i++) {
+			if(i % 2 == 0) {
+				portable_draughts_notation[i] = pdn_number;
+				pdn_number++;
+			} else {
+				portable_draughts_notation[1] = 0;
+			}
+		}
+	}
+	return portable_draughts_notation;
 }
 
 Mat detectObjects(Mat& image, Mat& sample, Scalar colour) {
