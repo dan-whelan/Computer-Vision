@@ -192,14 +192,6 @@ const int GROUND_TRUTH_FOR_DRAUGHTSGAME1_VIDEO_MOVES[][3] = {
 #define PIECES_ON_BLACK 0
 #define PIECES_ON_WHITE 1
 
-// Whether a piece on a given square is black or white (cue Michael Jackson)
-#define PIECE_IS_BLACK 0
-#define PIECE_IS_WHITE 1
-
-// Whether a piece is a King or not
-#define PIECE_IS_KING 1
-
-
 class DraughtsBoard
 {
 private:
@@ -249,18 +241,20 @@ void DraughtsBoard::loadGroundTruth(string pieces, int man_type, int king_type)
 }
 
 Mat transformImage(Mat& image);
-int* determineBoardPDN(int what_squares);
 Mat detectObjects(Mat& image, Mat& sample, Scalar colour);
+int* determineBoardPDN(int what_squares);
+void determineManOnSquare(int pdn_squares_with_pieces[NUMBER_OF_SQUARES][NUMBER_OF_CONDITIONS], int *portable_draughts_notation, Mat& pieces, Mat& squares, Vec3b colour_square);
+bool isPieceKing(int pdn_number, int colour_piece);
 
 void MyApplication()
 {
-	// Load in video, image and sample images for BackProjection
+	// Load in image and sample images for BackProjection
 
 	// string video_filename("Media/DraughtsGame1.avi");
 	// VideoCapture video;
 	// video.open(video_filename);
 
-	int image_index = 0;
+	int image_index = 2076;
 	int pieces[32];
 	string draughts_filename("Media/DraughtsGame1Move"+to_string(image_index)+".JPG");
 	Mat draughts_image = imread(draughts_filename, 1);
@@ -340,6 +334,8 @@ void MyApplication()
 				}
 			}
 		}
+		Mat all_pieces_on_board;
+		addWeighted(white_pieces_clean, 1, black_pieces_clean, 1, 0.0, all_pieces_on_board);
 
 		// Set up PDN array
 		int* portable_draughts_notation;
@@ -348,40 +344,17 @@ void MyApplication()
 		// Array containing PDN number, colour of piece, is piece King,  
 		int pdn_squares_with_pieces[NUMBER_OF_SQUARES][NUMBER_OF_CONDITIONS] = {0,0};
 
-		// Detect Whether a Square contains a white piece or not
+		// Detect Whether a Square contains a white piece or a black piece or neither
+		determineManOnSquare(pdn_squares_with_pieces, portable_draughts_notation, all_pieces_on_board, black_squares_cca, BLACK_SQUARE);
 
-		// TODO Implement boolean to determine if piece has already been checked? 
-		// How does this work going from piece to piece?
-		// Increase Column increment to go across 8 times and rows to go one by one?
-		int is_pdn_number = 0;
-		int pdn_number = 0;
-		for(int column = 0; column < NUMBER_OF_TRANSFORMED_COLUMNS; column++) {
-			for(int row = 0; row < NUMBER_OF_TRANSFORMED_ROWS; row ++) {
-				cout << is_pdn_number << endl;
-				cout << (white_pieces_clean.at<Vec3b>(row, column) == WHITE_PIECE) << endl;
-				cout << (black_squares_cca.at<Vec3b>(row, column) == BLACK_SQUARE) << endl;
-				if(portable_draughts_notation[is_pdn_number] != 0) {
-					if(white_pieces_clean.at<Vec3b>(row, column) == WHITE_PIECE 
-							&& black_squares_cca.at<Vec3b>(row, column) == BLACK_SQUARE 
-							&& pdn_squares_with_pieces[]) {
-						pdn_squares_with_pieces[portable_draughts_notation[pdn_number]][0] = pdn_number+1;
-						pdn_squares_with_pieces[portable_draughts_notation[pdn_number]][1] = PIECE_IS_WHITE;
-						pdn_squares_with_pieces[portable_draughts_notation[pdn_number]][2] = 0;
-						pdn_number++;
-					}
-				}
-				is_pdn_number++;
-			}
-		}
-
+		// TODO Figure out how to determine if piece is on square when piece not centered 
 		for(int i = 0; i <  32; i++) {
 			cout << pdn_squares_with_pieces[i][0] << " " << pdn_squares_with_pieces[i][1] << " " << pdn_squares_with_pieces[i][2] << endl;
 		}
 
 		imshow("Black", black_squares_cca);
 		imshow("White", white_squares_cca);
-		imshow("Piece", white_pieces_clean);
-		imshow("Pieces", black_pieces_clean);
+		imshow("Piece", all_pieces_on_board);
 		waitKey();
 
     }
@@ -413,31 +386,6 @@ Mat transformImage(Mat& image) {
 	return perspective_warped_image;
 }
 
-int* determineBoardPDN(int what_squares) {
-	static int portable_draughts_notation[NUMBER_OF_SQUARES*2];
-	int pdn_number = 1;
-	if(what_squares == PIECES_ON_BLACK) {
-		for(int i = 0; i < sizeof(portable_draughts_notation); i++) {
-			if(i % 2 != 0) {
-				portable_draughts_notation[i] = pdn_number;
-				pdn_number++;
-			} else {
-				portable_draughts_notation[i] = 0;
-			}
-		}
-	}
-	else {
-		for(int i = 0; i < sizeof(portable_draughts_notation); i++) {
-			if(i % 2 == 0) {
-				portable_draughts_notation[i] = pdn_number;
-				pdn_number++;
-			} else {
-				portable_draughts_notation[1] = 0;
-			}
-		}
-	}
-	return portable_draughts_notation;
-}
 
 Mat detectObjects(Mat& image, Mat& sample, Scalar colour) {
 		//Prepare 
@@ -496,4 +444,106 @@ int main() {
     MyApplication();
 
     return 0;
+}
+
+int* determineBoardPDN(int what_squares) {
+	static int portable_draughts_notation[NUMBER_OF_SQUARES*2];
+	int pdn_number = 1;
+	if(what_squares == PIECES_ON_BLACK) {
+		for(int i = 0; i < NUMBER_OF_SQUARES*2; i += NUMBER_OF_SQUARES_ON_EACH_SIDE) {
+			if((i/(NUMBER_OF_SQUARES_ON_EACH_SIDE)) % 2 == 0) {
+				for(int j = i; j < (i+NUMBER_OF_SQUARES_ON_EACH_SIDE); j++) {
+					if(j % 2 != 0) {
+						portable_draughts_notation[j] = pdn_number;
+						pdn_number++;
+					} else {
+						portable_draughts_notation[j] = 0;
+					}
+				}
+			} else {
+				for(int j = i; j < (i+NUMBER_OF_SQUARES_ON_EACH_SIDE); j++) {
+					if(j % 2 == 0) {
+						portable_draughts_notation[j] = pdn_number;
+						pdn_number++;
+					} else {
+						portable_draughts_notation[j] = 0;
+					}
+				}
+			} 
+		}
+	}
+	else {
+		for(int i = 0; i < NUMBER_OF_SQUARES*2; i += NUMBER_OF_SQUARES_ON_EACH_SIDE) {
+			if((i/(NUMBER_OF_SQUARES_ON_EACH_SIDE)) % 2 == 0) {
+				for(int j = i; j < (i+NUMBER_OF_SQUARES_ON_EACH_SIDE); j++) {
+					if(j % 2 == 0) {
+						portable_draughts_notation[j] = pdn_number;
+						pdn_number++;
+					} else {
+						portable_draughts_notation[j] = 0;
+					}
+				}
+			} else {
+				for(int j = i; j < (i+NUMBER_OF_SQUARES_ON_EACH_SIDE); j++) {
+					if(j % 2 != 0) {
+						portable_draughts_notation[j] = pdn_number;
+						pdn_number++;
+					} else {
+						portable_draughts_notation[j] = 0;
+					}
+				}
+			} 
+		}
+	}
+	return portable_draughts_notation;
+}
+
+void determineManOnSquare(int pdn_squares_with_pieces[NUMBER_OF_SQUARES][NUMBER_OF_CONDITIONS], int *portable_draughts_notation, Mat& pieces, Mat& squares, Vec3b colour_square) {
+	int is_pdn_number = 0;
+	int pdn_number = 0;
+	for(int column = CENTER; column < NUMBER_OF_TRANSFORMED_COLUMNS; column+=(NUMBER_OF_TRANSFORMED_COLUMNS/NUMBER_OF_SQUARES_ON_EACH_SIDE)) {
+		for(int row = CENTER; row < NUMBER_OF_TRANSFORMED_ROWS; row += (NUMBER_OF_TRANSFORMED_ROWS/NUMBER_OF_SQUARES_ON_EACH_SIDE)) {
+			if(portable_draughts_notation[is_pdn_number] != 0) {
+				if(pieces.at<Vec3b>(row, column) == WHITE_PIECE) {
+					pieces.at<Vec3b>(row, column) = WHITE_SQUARE;
+					pdn_squares_with_pieces[pdn_number][0] = portable_draughts_notation[is_pdn_number];
+					pdn_squares_with_pieces[pdn_number][1] = WHITE_MAN_ON_SQUARE;
+					pdn_squares_with_pieces[pdn_number][2] = (isPieceKing(pdn_number, WHITE_MAN_ON_SQUARE)) ? WHITE_KING_ON_SQUARE : EMPTY_SQUARE;
+					pdn_number++;
+				} else if(pieces.at<Vec3b>(row-5, column) == WHITE_PIECE) {
+					pieces.at<Vec3b>(row-5, column) = WHITE_SQUARE;
+					pdn_squares_with_pieces[pdn_number][0] = portable_draughts_notation[is_pdn_number];
+					pdn_squares_with_pieces[pdn_number][1] =WHITE_MAN_ON_SQUARE;
+					pdn_squares_with_pieces[pdn_number][2] = (isPieceKing(pdn_number, WHITE_MAN_ON_SQUARE)) ? WHITE_KING_ON_SQUARE : EMPTY_SQUARE;
+					pdn_number++;
+				} else if(pieces.at<Vec3b>(row, column) == BLACK_PIECE) {
+					pdn_squares_with_pieces[pdn_number][0] = portable_draughts_notation[is_pdn_number];
+					pdn_squares_with_pieces[pdn_number][1] =BLACK_MAN_ON_SQUARE;
+					pdn_squares_with_pieces[pdn_number][2] = (isPieceKing(pdn_number, BLACK_MAN_ON_SQUARE)) ? BLACK_KING_ON_SQUARE : EMPTY_SQUARE;
+					pdn_number++;
+				} else if(pieces.at<Vec3b>(row-5, column) == BLACK_PIECE) {
+					pdn_squares_with_pieces[pdn_number][0] = portable_draughts_notation[is_pdn_number];
+					pdn_squares_with_pieces[pdn_number][1] =BLACK_MAN_ON_SQUARE;
+					pdn_squares_with_pieces[pdn_number][2] = (isPieceKing(pdn_number, BLACK_MAN_ON_SQUARE)) ? BLACK_KING_ON_SQUARE : EMPTY_SQUARE;
+					pdn_number++;
+				} else {
+					pdn_squares_with_pieces[pdn_number][0] = portable_draughts_notation[is_pdn_number];
+					pdn_squares_with_pieces[pdn_number][1] = EMPTY_SQUARE;
+					pdn_squares_with_pieces[pdn_number][2] = EMPTY_SQUARE;
+					pdn_number++;
+				}
+			}
+			is_pdn_number++;
+		}
+	}
+}
+
+bool isPieceKing(int pdn_number, int colour_piece) {
+	if((pdn_number == 1 || pdn_number == 2 || pdn_number == 3 || pdn_number ==4) && colour_piece == BLACK_MAN_ON_SQUARE) {
+		return true;
+	} else if((pdn_number == 29 || pdn_number ==30 || pdn_number == 31 || pdn_number ==32) && colour_piece == WHITE_MAN_ON_SQUARE) {
+		return true;
+	} else {
+		return false;
+	}
 }
