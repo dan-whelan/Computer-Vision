@@ -89,8 +89,8 @@ const string GROUND_TRUTH_FOR_BOARD_IMAGES[][3] = {
 	{"DraughtsGame1Move62.JPG", "4,9", "K2,11,19,20,25"},
 	{"DraughtsGame1Move63.JPG", "4,14", "K2,11,19,20,25"},
 	{"DraughtsGame1Move64.JPG", "4", "K2,11,15,19,20"},
-	{"DraughtsGame1Move65.JPG", "8", "K2,11,15,19,20,29"},
-	{"DraughtsGame1Move66.JPG", "", "K2,K4,15,19,20,29"}
+	{"DraughtsGame1Move65.JPG", "8", "K2,11,15,19,20"}, // <- edited as per announcement
+	{"DraughtsGame1Move66.JPG", "", "K2,K4,15,19,20"} // <- edited as per announcement 
 };
 
 // Data provided:  Approx. frame number, From square number, To square number
@@ -186,19 +186,25 @@ const int GROUND_TRUTH_FOR_DRAUGHTSGAME1_VIDEO_MOVES[][3] = {
 #define CENTER (NUMBER_OF_TRANSFORMED_COLUMNS/NUMBER_OF_SQUARES_ON_EACH_SIDE)/2
 
 // Amount of information collected for PDN
-#define NUMBER_OF_CONDITIONS 3
+#define NUMBER_OF_CONDITIONS 2
 
 // Whether the game is being played using black or white squares
 #define PIECES_ON_BLACK 0
 #define PIECES_ON_WHITE 1
 
+// Confusion Matrix Parameters
+#define NUMBER_OF_STATES 3
+#define IS_EMPTY 0
+#define IS_WHITE 1
+#define IS_BLACK 2
+
 class DraughtsBoard
 {
 private:
-	int mBoardGroundTruth[NUMBER_OF_SQUARES];
 	Mat mOriginalImage;
 	void loadGroundTruth(string pieces, int man_type, int king_type);
 public:
+	int mBoardGroundTruth[NUMBER_OF_SQUARES];
 	DraughtsBoard(string filename, string white_pieces_ground_truth, string black_pieces_ground_truth);
 };
 
@@ -240,6 +246,7 @@ void DraughtsBoard::loadGroundTruth(string pieces, int man_type, int king_type)
 	}
 }
 
+void initialiseConfusionMatrix(int *ground_truth, int current_image_index, int confusion_matrix[NUMBER_OF_SQUARES*NUMBER_OF_IMAGES][NUMBER_OF_STATES]);
 void determineBoardPDN(int what_squares, int *portable_draughts_notation, int pdn_squares_with_pieces[NUMBER_OF_SQUARES][NUMBER_OF_CONDITIONS]);
 Mat transformImage(Mat& image);
 Mat detectObjects(Mat& image, Mat& sample, Scalar colour);
@@ -257,7 +264,11 @@ void MyApplication()
 	// video.open(video_filename);
 
 	int pieces[32];
-	int tp, fp, fn, tn;
+	int tp = 0;
+	int fp = 0;
+	int fn = 0;
+	int tn = 0;
+	int confusion_matrix[NUMBER_OF_IMAGES*NUMBER_OF_SQUARES][NUMBER_OF_STATES] = { 0, 0 };
 	string black_pieces_filename("Media/DraughtsGame1BlackPieces.jpg");
 	Mat black_pieces_image = imread(black_pieces_filename, 1);
 	string white_pieces_filename("Media/DraughtsGame1WhitePieces.jpg");
@@ -293,10 +304,12 @@ void MyApplication()
 		// Array containing PDN number, colour of piece, is piece King,  
 		int pdn_squares_with_pieces[NUMBER_OF_SQUARES][NUMBER_OF_CONDITIONS] = {0,0};
 		determineBoardPDN(PIECES_ON_BLACK, portable_draughts_notation, pdn_squares_with_pieces);
-		for(int i = 19; i < NUMBER_OF_IMAGES; i++) {
+		for(int i = 0; i < NUMBER_OF_IMAGES; i++) {
 			int image_index = i;
+
 			// loading of image and ground truth
 			DraughtsBoard current_board(GROUND_TRUTH_FOR_BOARD_IMAGES[image_index][0], GROUND_TRUTH_FOR_BOARD_IMAGES[image_index][1], GROUND_TRUTH_FOR_BOARD_IMAGES[image_index][2]);
+			initialiseConfusionMatrix(current_board.mBoardGroundTruth, image_index*NUMBER_OF_SQUARES, confusion_matrix);
 
 			// Perform a perspective transformation in order to better view the entire board
 			string draughts_filename("Media/DraughtsGame1Move"+to_string(image_index)+".JPG");
@@ -327,24 +340,49 @@ void MyApplication()
 			Mat all_pieces_on_board;
 			addWeighted(white_pieces_clean, 1, black_pieces_clean, 1, 0.0, all_pieces_on_board);
 
-
-
 			// Detect Whether a Square contains a white piece or a black piece or neither
 			determineManOnSquare(pdn_squares_with_pieces, portable_draughts_notation, all_pieces_on_board, black_squares_cca, BLACK_SQUARE);
-			for(int i = 0; i <  32; i++) {
-				cout << pdn_squares_with_pieces[i][0] << " " << pdn_squares_with_pieces[i][1] << " " << pdn_squares_with_pieces[i][2] << endl;
+			// for(int i = 0; i <  NUMBER_OF_SQUARES; i++) {
+			// 	cout << pdn_squares_with_pieces[i][0] << " " << pdn_squares_with_pieces[i][1] << endl;
+			// }
+
+			// Perform Ground Truth Analysis Using Provided Ground Truth
+			for(int i = image_index*NUMBER_OF_SQUARES, j = 0; j < NUMBER_OF_SQUARES; i++, j++) {
+				int detection = pdn_squares_with_pieces[j][1];
+				if(detection == confusion_matrix[i][IS_EMPTY]) tp++;
+				else if(detection == confusion_matrix[i][IS_BLACK]) tp++;
+				else if(detection == confusion_matrix[i][IS_WHITE]) tp++;
+				else if(detection != EMPTY_SQUARE && confusion_matrix[i][IS_EMPTY] == EMPTY_SQUARE) fp++;
+				else if(detection == BLACK_MAN_ON_SQUARE && confusion_matrix[i][IS_BLACK] != BLACK_MAN_ON_SQUARE) fp++;
+				else if(detection == WHITE_MAN_ON_SQUARE && confusion_matrix[i][IS_WHITE] != WHITE_MAN_ON_SQUARE) fp++;
+				else if(detection == EMPTY_SQUARE && confusion_matrix[i][IS_EMPTY] != EMPTY_SQUARE) fn++;
+				else if(detection == EMPTY_SQUARE && confusion_matrix[i][IS_BLACK] == BLACK_MAN_ON_SQUARE) fn++;
+				else if(detection == EMPTY_SQUARE && confusion_matrix[i][IS_WHITE] == WHITE_MAN_ON_SQUARE) fn++;
+				else tn++;
 			}
 
-			imshow("Black", black_squares_cca);
-			imshow("White", white_squares_cca);
-			imshow("Piece", all_pieces_on_board);
-			waitKey();
+			// imshow("Black", black_squares_cca);
+			// imshow("White", white_squares_cca);
+			// imshow("Piece", all_pieces_on_board);
+			// waitKey();
 
-			cout << "End of Image " + to_string(i) << endl;
+			// cout << "End of Image " + to_string(i) << endl;
 		}
+
+		cout << "TP: " + to_string(tp) + " " << "FP: " + to_string(fp) + " " << "FN: " + to_string(fn) + " " << "TN: " + to_string(tn) << endl; 
 	}
 }
 
+// Initialises the Confusion Matrix to allow for comparison with detections
+void initialiseConfusionMatrix(int *ground_truth, int current_index, int confusion_matrix[NUMBER_OF_SQUARES*NUMBER_OF_IMAGES][NUMBER_OF_STATES]) {
+	for(int i = current_index, j = 0; j < NUMBER_OF_SQUARES; i++, j++) {
+		if(ground_truth[j] == BLACK_MAN_ON_SQUARE) confusion_matrix[i][IS_BLACK] = BLACK_MAN_ON_SQUARE;
+		else if(ground_truth[j] == WHITE_MAN_ON_SQUARE) confusion_matrix[i][IS_WHITE] = WHITE_MAN_ON_SQUARE;
+		else confusion_matrix[i][IS_EMPTY] = EMPTY_SQUARE;
+	}
+}
+
+// Transforms the perspective of the image so that the board is "facing the camera"
 Mat transformImage(Mat& image) {
 	Mat perspective_matrix(4, 4, CV_32FC1), perspective_warped_image;
 	perspective_warped_image = Mat::zeros(400, 400, image.type());
@@ -371,9 +409,9 @@ Mat transformImage(Mat& image) {
 	return perspective_warped_image;
 }
 
-
+// Detects the 
 Mat detectObjects(Mat& image, Mat& sample, Scalar colour) {
-		//Prepare 
+		//Prepare Matrices and vectors required for the processing 
 		Mat hsv_image, hsv_sample_image, probability_image, grey_probability_image, 
 			binary_probability_image, morphed_probability_image;
 		vector<Mat> hsv_sample_planes, hsv_image_planes, probability_image_planes;
@@ -488,6 +526,18 @@ void determineBoardPDN(int what_squares, int *portable_draughts_notation, int pd
 	}
 }
 
+Mat cleanPieceDetection(Vec3b colour_piece, Mat& current_piece_detection, Mat& black_squares_cca, Mat& white_squares_cca) {
+	Mat clean_piece_detection = Mat::zeros(current_piece_detection.size(), current_piece_detection.type());
+	for(int column = 0; column < NUMBER_OF_TRANSFORMED_COLUMNS; column++) {
+		for(int row = 0; row < NUMBER_OF_TRANSFORMED_ROWS; row++) {
+			if(current_piece_detection.at<Vec3b>(row, column) == colour_piece && (black_squares_cca.at<Vec3b>(row, column) == BLACK_SQUARE || white_squares_cca.at<Vec3b>(row, column) != WHITE_SQUARE)) {
+				clean_piece_detection.at<Vec3b>(row, column) = colour_piece;
+			}
+		}
+	}
+	return clean_piece_detection;
+}
+
 void determineManOnSquare(int pdn_squares_with_pieces[NUMBER_OF_SQUARES][NUMBER_OF_CONDITIONS], int *portable_draughts_notation, Mat& pieces, Mat& squares, Vec3b colour_square) {
 	int is_pdn_number = 0;
 	int pdn_number = 0;
@@ -495,24 +545,13 @@ void determineManOnSquare(int pdn_squares_with_pieces[NUMBER_OF_SQUARES][NUMBER_
 		for(int row = CENTER; row < NUMBER_OF_TRANSFORMED_ROWS; row += (NUMBER_OF_TRANSFORMED_ROWS/NUMBER_OF_SQUARES_ON_EACH_SIDE)) {
 			if(portable_draughts_notation[is_pdn_number] != 0) {
 				if(pieces.at<Vec3b>(row, column) == WHITE_PIECE) {
-					pdn_squares_with_pieces[pdn_number][1] = WHITE_MAN_ON_SQUARE;
-					pdn_squares_with_pieces[pdn_number][2] = (isPieceKing(pdn_number+1, WHITE_MAN_ON_SQUARE, pdn_squares_with_pieces)) ? WHITE_KING_ON_SQUARE : EMPTY_SQUARE;
-					pdn_number++;
-				} else if(pieces.at<Vec3b>(row-5, column) == WHITE_PIECE) {
-					pdn_squares_with_pieces[pdn_number][1] = WHITE_MAN_ON_SQUARE;
-					pdn_squares_with_pieces[pdn_number][2] = (isPieceKing(pdn_number+1, WHITE_MAN_ON_SQUARE, pdn_squares_with_pieces)) ? WHITE_KING_ON_SQUARE : EMPTY_SQUARE;
+					pdn_squares_with_pieces[pdn_number][1] = (isPieceKing(pdn_number+1, WHITE_MAN_ON_SQUARE, pdn_squares_with_pieces)) ? WHITE_KING_ON_SQUARE : WHITE_MAN_ON_SQUARE;
 					pdn_number++;
 				} else if(pieces.at<Vec3b>(row, column) == BLACK_PIECE) {
-					pdn_squares_with_pieces[pdn_number][1] =BLACK_MAN_ON_SQUARE;
-					pdn_squares_with_pieces[pdn_number][2] = (isPieceKing(pdn_number+1, BLACK_MAN_ON_SQUARE, pdn_squares_with_pieces)) ? BLACK_KING_ON_SQUARE : EMPTY_SQUARE;
-					pdn_number++;
-				} else if(pieces.at<Vec3b>(row-5, column) == BLACK_PIECE) {
-					pdn_squares_with_pieces[pdn_number][1] =BLACK_MAN_ON_SQUARE;
-					pdn_squares_with_pieces[pdn_number][2] = (isPieceKing(pdn_number+1, BLACK_MAN_ON_SQUARE, pdn_squares_with_pieces)) ? BLACK_KING_ON_SQUARE : EMPTY_SQUARE;
+					pdn_squares_with_pieces[pdn_number][1] = (isPieceKing(pdn_number+1, BLACK_MAN_ON_SQUARE, pdn_squares_with_pieces)) ? BLACK_KING_ON_SQUARE : BLACK_MAN_ON_SQUARE;
 					pdn_number++;
 				} else {
 					pdn_squares_with_pieces[pdn_number][1] = EMPTY_SQUARE;
-					pdn_squares_with_pieces[pdn_number][2] = EMPTY_SQUARE;
 					pdn_number++;
 				}
 			}
@@ -527,25 +566,9 @@ bool isPieceKing(int pdn_number, int colour_piece, int pdn_squares_with_pieces[N
 		return true;
 	} else if((pdn_number == 29 || pdn_number ==30 || pdn_number == 31 || pdn_number ==32) && colour_piece == WHITE_MAN_ON_SQUARE) {
 		return true;
-	} else if(pdn_squares_with_pieces[pdn_number-1][2] == WHITE_KING_ON_SQUARE && colour_piece == WHITE_MAN_ON_SQUARE) {
-		return true;
-	} else if(pdn_squares_with_pieces[pdn_number-1][2] == BLACK_KING_ON_SQUARE && colour_piece == BLACK_MAN_ON_SQUARE) {
-		return true;
 	} else {
 		return false;
 	}
-}
-
-Mat cleanPieceDetection(Vec3b colour_piece, Mat& current_piece_detection, Mat& black_squares_cca, Mat& white_squares_cca) {
-	Mat clean_piece_detection = Mat::zeros(current_piece_detection.size(), current_piece_detection.type());
-	for(int column = 0; column < NUMBER_OF_TRANSFORMED_COLUMNS; column++) {
-		for(int row = 0; row < NUMBER_OF_TRANSFORMED_ROWS; row++) {
-			if(current_piece_detection.at<Vec3b>(row, column) == colour_piece && (black_squares_cca.at<Vec3b>(row, column) == BLACK_SQUARE || white_squares_cca.at<Vec3b>(row, column) != WHITE_SQUARE)) {
-				clean_piece_detection.at<Vec3b>(row, column) = colour_piece;
-			}
-		}
-	}
-	return clean_piece_detection;
 }
 
 int main() {
