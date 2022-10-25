@@ -466,22 +466,176 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
   /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/highgui.hpp \
   /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/imgcodecs.hpp \
   /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/videoio.hpp \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/iostream \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/fstream \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/filesystem \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/stack \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/deque \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/iomanip \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/list \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/experimental/filesystem \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/experimental/__config \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/opencv.hpp \
   /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/calib3d.hpp \
   /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/features2d.hpp \
   /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/miniflann.hpp \
   /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/defines.h \
   /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/config.h \
-  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/core/affine.hpp
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/core/affine.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/dnn.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/dnn/dnn.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/core/async.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/dnn/version.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/dnn/dict.hpp \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/map \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__functional/is_transparent.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__node_handle \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/optional \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__tree \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/dnn/layer.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/dnn/dnn.inl.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/dnn/utils/inference_engine.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/dnn/dnn.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/flann_base.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/general.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/matrix.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/params.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/any.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/iostream \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/saving.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/nn_index.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/result_set.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/set \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/all_indices.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/kdtree_index.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/dynamic_bitset.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/dist.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/heap.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/unordered_map \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__hash_table \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/allocator.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/random.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/kdtree_single_index.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/kmeans_index.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/logger.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/composite_index.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/linear_index.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/hierarchical_clustering_index.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/lsh_index.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/lsh_table.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/iomanip \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/autotuned_index.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/ground_truth.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/index_testing.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/timer.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/sampling.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/ml.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/ml/ml.inl.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/photo.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/warpers.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/warpers.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/core/cuda.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/core/cuda_types.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/core/cuda.inl.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/warpers_inl.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/matchers.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/motion_estimators.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/util.hpp \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/list \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/util_inl.hpp \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/queue \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/deque \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/camera.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/exposure_compensate.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/seam_finders.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/blenders.hpp \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/random \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/numeric \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/fstream \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/filesystem \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/stack \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/experimental/filesystem \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/experimental/__config
 
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/experimental/__config:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/stack:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/filesystem:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/fstream:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/numeric:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/random:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/deque:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/queue:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/warpers_inl.hpp:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/util_inl.hpp:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/core/cuda.inl.hpp:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/core/cuda_types.hpp:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/core/cuda.hpp:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/warpers.hpp:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching.hpp:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/ml.hpp:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/sampling.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/timer.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/index_testing.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/autotuned_index.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/iomanip:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/linear_index.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/allocator.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/heap.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/dist.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/dynamic_bitset.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/kdtree_index.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/all_indices.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/result_set.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/nn_index.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/ground_truth.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/saving.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/params.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/matrix.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/general.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/flann_base.hpp:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann.hpp:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/dnn/dnn.inl.hpp:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/dnn/layer.hpp:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/optional:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__functional/is_transparent.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/dnn/dict.hpp:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/dnn/dnn.hpp:
 
 /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/config.h:
 
@@ -493,23 +647,15 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
 
 /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/calib3d.hpp:
 
-/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/experimental/__config:
-
-/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/iomanip:
-
-/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/deque:
-
-/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/stack:
-
-/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/filesystem:
-
-/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/fstream:
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/opencv.hpp:
 
 /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/videoio.hpp:
 
 /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/highgui.hpp:
 
 /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/objdetect/face.hpp:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/unordered_map:
 
 /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/objdetect/detection_based_tracker.hpp:
 
@@ -542,6 +688,8 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/sys/_types/_nlink_t.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/sys/_types/_in_port_t.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/exposure_compensate.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/sys/_types/_gid_t.h:
 
@@ -657,6 +805,8 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/_types/_wctrans_t.h:
 
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/dnn/utils/inference_engine.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__algorithm/partition.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__algorithm/pop_heap.h:
@@ -700,6 +850,8 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
 /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/core/mat.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__algorithm/iter_swap.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/any.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__algorithm/prev_permutation.h:
 
@@ -765,6 +917,8 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__algorithm/unwrap_iter.h:
 
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/hierarchical_clustering_index.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__algorithm/half_positive.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__algorithm/remove_copy.h:
@@ -783,7 +937,11 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__algorithm/make_heap.h:
 
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/kdtree_single_index.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/assert.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/dnn/version.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__memory/uninitialized_algorithms.h:
 
@@ -826,6 +984,8 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__memory/allocator.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__iterator/istreambuf_iterator.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/lsh_index.h:
 
 /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/core/affine.hpp:
 
@@ -891,6 +1051,8 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/sys/_pthread/_pthread_t.h:
 
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/lsh_table.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__config_site:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/sys/_types/_errno_t.h:
@@ -955,6 +1117,10 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
 
 /Library/Developer/CommandLineTools/usr/lib/clang/14.0.0/include/limits.h:
 
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/matchers.hpp:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__hash_table:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__memory/auto_ptr.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__functional/hash.h:
@@ -998,6 +1164,8 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__functional/bind_front.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__functional/binary_negate.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/dnn.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/variant:
 
@@ -1081,6 +1249,8 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__memory/construct_at.h:
 
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/camera.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/iostream:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__functional/pointer_to_unary_function.h:
@@ -1089,6 +1259,8 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/sys/_types/_sigset_t.h:
 
+/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__node_handle:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/new:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/strings.h:
@@ -1096,6 +1268,8 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__memory/allocator_arg_t.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/machine/_mcontext.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/blenders.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__algorithm/replace_copy.h:
 
@@ -1153,6 +1327,8 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/sys/_pthread/_pthread_attr_t.h:
 
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/util.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/concepts:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__iterator/iterator_traits.h:
@@ -1192,6 +1368,8 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/string.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/sys/_types/_int32_t.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/logger.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/sys/_endian.h:
 
@@ -1247,6 +1425,8 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/wctype.h:
 
+/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/set:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__functional/ranges_operations.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__iterator/projected.h:
@@ -1295,6 +1475,8 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
 
 /Library/Developer/CommandLineTools/usr/lib/clang/14.0.0/include/stdint.h:
 
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/core/async.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/sys/_types/_off_t.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/xlocale/_stdlib.h:
@@ -1327,7 +1509,11 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__functional/operations.h:
 
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/warpers.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__undef_macros:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/map:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/_stdio.h:
 
@@ -1338,6 +1524,8 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__functional/unary_function.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/_types/_wctype_t.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/kmeans_index.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/string.h:
 
@@ -1354,6 +1542,8 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__iterator/default_sentinel.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/arm/_types.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/random.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__utility/integer_sequence.h:
 
@@ -1387,9 +1577,13 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__memory/uses_allocator.h:
 
+/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__tree:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__utility/as_const.h:
 
 /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/core/cvstd_wrapper.hpp:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/ml/ml.inl.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__utility/in_place.h:
 
@@ -1401,6 +1595,10 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__functional_base:
 
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/seam_finders.hpp:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/composite_index.h:
+
 /Library/Developer/CommandLineTools/usr/lib/clang/14.0.0/include/__stddef_max_align_t.h:
 
 /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/core/vsx_utils.hpp:
@@ -1410,6 +1608,8 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/AvailabilityInternal.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/sys/_types/_uintptr_t.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/motion_estimators.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/sys/_types/_dev_t.h:
 
@@ -1422,6 +1622,8 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: MyApplication.cpp \
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__algorithm/comp.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/sys/_types/_timespec.h:
+
+/opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/photo.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/sys/errno.h:
 

@@ -464,18 +464,86 @@ CMakeFiles/draughts.dir/MyApplication.cpp.o: \
   /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/highgui.hpp \
   /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/imgcodecs.hpp \
   /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/videoio.hpp \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/iostream \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/fstream \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/filesystem \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/stack \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/deque \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/iomanip \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/list \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/experimental/filesystem \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/experimental/__config \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/opencv.hpp \
   /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/calib3d.hpp \
   /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/features2d.hpp \
   /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/miniflann.hpp \
   /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/defines.h \
   /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/config.h \
-  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/core/affine.hpp
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/core/affine.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/dnn.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/dnn/dnn.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/core/async.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/dnn/../dnn/version.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/dnn/dict.hpp \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/map \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__functional/is_transparent.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__node_handle \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/optional \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__tree \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/dnn/layer.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/dnn/dnn.inl.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/dnn/utils/inference_engine.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/dnn/utils/../dnn.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/flann_base.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/general.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/matrix.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/params.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/any.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/iostream \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/saving.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/nn_index.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/result_set.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/set \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/all_indices.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/kdtree_index.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/dynamic_bitset.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/dist.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/heap.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/unordered_map \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__hash_table \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/allocator.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/random.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/kdtree_single_index.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/kmeans_index.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/logger.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/composite_index.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/linear_index.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/hierarchical_clustering_index.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/lsh_index.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/lsh_table.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/iomanip \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/autotuned_index.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/ground_truth.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/index_testing.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/timer.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/flann/sampling.h \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/ml.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/ml/ml.inl.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/photo.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/warpers.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/warpers.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/core/cuda.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/core/cuda_types.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/core/cuda.inl.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/warpers_inl.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/matchers.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/motion_estimators.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/util.hpp \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/list \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/util_inl.hpp \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/queue \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/deque \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/camera.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/exposure_compensate.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/seam_finders.hpp \
+  /opt/homebrew/Cellar/opencv/4.6.0/include/opencv4/opencv2/stitching/detail/blenders.hpp \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/random \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/numeric \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/fstream \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/filesystem \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/stack \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/experimental/filesystem \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/experimental/__config
