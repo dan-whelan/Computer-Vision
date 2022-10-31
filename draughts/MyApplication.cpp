@@ -193,15 +193,17 @@ const int GROUND_TRUTH_FOR_DRAUGHTSGAME1_VIDEO_MOVES[][3] = {
 // Amount of information collected for PDN
 #define NUMBER_OF_CONDITIONS 2
 
-// Whether the game is being played using black or white squares
+// Whether the game is being played using black or white squares (although according to Michael Jackson "it don't matter")
 #define PIECES_ON_BLACK 0
 #define PIECES_ON_WHITE 1
 
 // Confusion Matrix Parameters
-#define NUMBER_OF_STATES 3
+#define NUMBER_OF_STATES 5
 #define IS_EMPTY 0
 #define IS_WHITE 1
 #define IS_BLACK 2
+#define IS_WHITE_KING 3
+#define IS_BLACK_KING 4
 
 // Application modes
 #define IMAGE 0
@@ -211,7 +213,9 @@ const int GROUND_TRUTH_FOR_DRAUGHTSGAME1_VIDEO_MOVES[][3] = {
 // Video parameters
 #define WHITE_BLACK_RATIO_CUTOFF 0.03
 #define APPROXIMATION_OFFSET 5
-#define FIRST_FRAME 1
+
+// Edges Parameters
+#define RHO 1.2
 
 class DraughtsBoard
 {
@@ -354,6 +358,9 @@ void MyApplication()
 			// Set variables for video analysis
 			bool isChecked = true;
 			int frame_number = 0;
+			int correct_frames_checked = 0;
+			int frames_analysed = 0;
+			int num_moves_detected = 0;
 			double total = NUMBER_OF_TRANSFORMED_ROWS*NUMBER_OF_TRANSFORMED_COLUMNS;
 			double num_white = 0;
 			double white_black_ratio = 0;
@@ -399,15 +406,21 @@ void MyApplication()
 				white_black_ratio = num_white/total;
 				if(isChecked == true && white_black_ratio <= WHITE_BLACK_RATIO_CUTOFF) 
 				{
+					frames_analysed++;
 					isChecked = false;	
 					determinePieceLocations(current_frame, black_squares_image, white_squares_image, black_pieces_image, white_pieces_image, portable_draughts_notation, pdn_squares_with_pieces);
 					for(int frame_index = 0; frame_index < NUMBER_OF_IMAGES; frame_index++) {
 						if(((frame_number == GROUND_TRUTH_FOR_DRAUGHTSGAME1_VIDEO_MOVES[frame_index][0] 
 								|| (frame_number <= (GROUND_TRUTH_FOR_DRAUGHTSGAME1_VIDEO_MOVES[frame_index][0]+APPROXIMATION_OFFSET)
 								&& frame_number >= (GROUND_TRUTH_FOR_DRAUGHTSGAME1_VIDEO_MOVES[frame_index][0]-APPROXIMATION_OFFSET))) 
-								&& last_checked != frame_index) || frame_number == 1) {
-									performGroundTruthAnalysis(tp, fp, fn, tn, pdn_squares_with_pieces, frame_index, confusion_matrix);
-									if(frame_number != FIRST_FRAME) last_checked = frame_index;
+								&& last_checked != frame_index)) {
+									correct_frames_checked++;
+									int old_pdn_number = GROUND_TRUTH_FOR_DRAUGHTSGAME1_VIDEO_MOVES[frame_index][1];
+									int new_pdn_number = GROUND_TRUTH_FOR_DRAUGHTSGAME1_VIDEO_MOVES[frame_index][2];
+									int current_piece = (correct_frames_checked%2==0) ? BLACK_MAN_ON_SQUARE : WHITE_MAN_ON_SQUARE;
+									if(pdn_squares_with_pieces[old_pdn_number-1][1] == EMPTY_SQUARE && pdn_squares_with_pieces[new_pdn_number-1][1] == current_piece)
+										num_moves_detected++;
+									last_checked = frame_index;
 									break;
 								}
 					}
@@ -416,19 +429,129 @@ void MyApplication()
 				{
 					isChecked = true;
 				}
-				imshow("Video", current_frame);
-				imshow("Foreground", foreground_image);
-				waitKey(30);
+				// imshow("Video", current_frame);
+				// imshow("Foreground", foreground_image);
+				// waitKey(30);
 				draughts_video >> current_frame;
 				frame_number++;
 			}
-			cout << "TP: " + to_string(tp) + " " << "FP: " + to_string(fp) + " " << "FN: " + to_string(fn) + " " << "TN: " + to_string(tn) << endl; 
+			cout << "Frames Analysed: " + to_string(frames_analysed) << endl;
+			cout << "Ground Truth Frames Analysed: " + to_string(correct_frames_checked) << endl;
+			cout << "Moves Detected: " + to_string(num_moves_detected) << endl;
 			draughts_video.release();
 		}
 	}
 	else if(mode == EDGES)
 	{
+		string static_board_filename = "Media/DraughtsGame1EmptyBoard.jpg";
+		Mat static_board_image = imread(static_board_filename, IMREAD_GRAYSCALE);
+		if(static_board_image.empty()) 
+		{
+			cout << "Failed to read Empty Board Image" << endl;
+		}	
+		else
+		{
+			Mat binary_edge_image, hough_line_image, boundary_chain_code_image, line_segments_image;
+			Canny(static_board_image, binary_edge_image, 50, 255);
+			cvtColor(binary_edge_image, hough_line_image, COLOR_GRAY2BGR);
+			boundary_chain_code_image = hough_line_image.clone();
+			line_segments_image = hough_line_image.clone();
 
+			// Boundary Chain Code
+			vector<vector<Point>> contours;
+			vector<Vec4i> hierarchy;
+
+			findContours(binary_edge_image, contours, hierarchy, RETR_CCOMP, CHAIN_APPROX_SIMPLE);
+
+			for(int contour_number = 0; contour_number < contours.size(); contour_number++) 
+			{
+				drawContours(boundary_chain_code_image, contours, contour_number, Scalar(rand()&0xFF, rand()&0xFF, rand()&0xFF), 1, LINE_AA, hierarchy);
+			}
+
+			// Extract line segments
+			vector<vector<Point>> approx_contours(contours.size());
+
+			for(int contour_number = 0; contour_number < approx_contours.size(); contour_number++) 
+			{
+				approxPolyDP(Mat(contours[contour_number]), approx_contours[contour_number], 5, true);
+			}
+			
+			for(int contour_number = 0; contour_number < contours.size(); contour_number++) 
+			{
+				drawContours(line_segments_image, approx_contours, contour_number, Scalar(rand()&0xFF, rand()&0xFF, rand()&0xFF), 1, LINE_AA, hierarchy);
+			}
+
+			// Hough Line Transformation
+			vector<Vec2f> lines; 
+			HoughLines(binary_edge_image, lines, RHO, CV_PI/180, 135);
+
+			// Determine Horizontal and Vertical lines by kmeans
+			TermCriteria criteria(TermCriteria::EPS | TermCriteria::MAX_ITER, 10000, 0.0001);
+			vector<float> angles;
+			for(size_t i = 0; i < lines.size(); i++) 
+			{
+				angles.push_back(lines[i][1]);
+			}
+			vector<Point2f> points;
+			for(int i = 0; i < angles.size(); i++)
+			{
+				float angle = angles[i];
+				points.push_back(Point2f(cos(angle*2), sin(angle*2)));
+			}
+			Mat labels, centers;
+			int K = 2;
+			kmeans(points, K, labels, criteria, 10, KMEANS_PP_CENTERS, centers);
+			vector<vector<Vec2f>> segments;
+			for(int i = 0; i < K; i++)
+			{
+				vector<Vec2f> segment;
+				segments.push_back(segment);
+			}
+
+			for(int i = 0; i < lines.size(); i++)
+			{
+				Vec2f line = lines[i];
+				if(labels.at<float>(i) == 0)
+					segments[0].push_back(line);
+				else segments[1].push_back(line);
+			}
+
+			// Draw the lines
+			for(int i = 0; i < segments.size(); i++)
+			{
+				int scalar_value = rand()&0xFF;
+				Scalar colour;
+				if(i == 0) colour = Scalar(0,0,255);
+				else colour = Scalar(255,0,0);
+				for( size_t j = 0; j < segments[i].size(); j++ )
+				{
+					Vec2f lines = segments[i][j];
+					float rho = lines[0], theta = lines[1];
+					Point pt1, pt2;
+					double a = cos(theta), b = sin(theta);
+					double x0 = a*rho, y0 = b*rho;
+					pt1.x = cvRound(x0 + 1000*(-b));
+					pt1.y = cvRound(y0 + 1000*(a));
+					pt2.x = cvRound(x0 - 1000*(-b));
+					pt2.y = cvRound(y0 - 1000*(a));
+					line( hough_line_image, pt1, pt2, colour, 1, LINE_AA);
+				}
+			}
+
+			// findChessboardCorners
+			vector<Point2f> corners;
+			Size pattern_size(4,4);
+			bool is_pattern = findChessboardCorners(static_board_image, pattern_size, corners);
+			if(is_pattern) 
+				cornerSubPix(static_board_image, corners, Size(11, 11), Size(-1, -1), TermCriteria(TermCriteria::EPS + TermCriteria::MAX_ITER, 30, 0.1));
+			drawChessboardCorners(static_board_image, pattern_size, Mat(corners), is_pattern);
+
+			imshow("Canny Edge Detection", binary_edge_image);
+			imshow("Lines Detected", hough_line_image);
+			imshow("Line Segments Detected", line_segments_image);
+			imshow("FindChessboardCorners", static_board_image);
+			waitKey();
+		}
 	}
 	else 
 	{
@@ -461,9 +584,9 @@ void determinePieceLocations(Mat& transformed_draughts_image, Mat& black_squares
 
 		// Detect Whether a Square contains a white piece or a black piece or neither
 		determineManOnSquare(pdn_squares_with_pieces, portable_draughts_notation, all_pieces_on_board, black_squares_cca, BLACK_SQUARE);
-		imshow("Piece Detection", all_pieces_on_board);
-		imshow("Transformed Image", transformed_draughts_image);
-		waitKey();
+		// imshow("Piece Detection", all_pieces_on_board);
+		// imshow("Transformed Image", transformed_draughts_image);
+		// waitKey();
 }
 
 // Initialises the Confusion Matrix to allow for comparison with detections
@@ -471,6 +594,8 @@ void initialiseConfusionMatrix(int *ground_truth, int current_index, int confusi
 	for(int i = current_index, j = 0; j < NUMBER_OF_SQUARES; i++, j++) {
 		if(ground_truth[j] == BLACK_MAN_ON_SQUARE) confusion_matrix[i][IS_BLACK] = BLACK_MAN_ON_SQUARE;
 		else if(ground_truth[j] == WHITE_MAN_ON_SQUARE) confusion_matrix[i][IS_WHITE] = WHITE_MAN_ON_SQUARE;
+		else if(ground_truth[j] == WHITE_KING_ON_SQUARE) confusion_matrix[i][IS_WHITE_KING] = WHITE_KING_ON_SQUARE;
+		else if(ground_truth[j] == BLACK_KING_ON_SQUARE) confusion_matrix[i][IS_BLACK_KING] = BLACK_KING_ON_SQUARE;
 		else confusion_matrix[i][IS_EMPTY] = EMPTY_SQUARE;
 	}
 }
@@ -724,12 +849,18 @@ void performGroundTruthAnalysis(int& tp, int& fp, int& fn, int& tn, int pdn_squa
 		if(detection == confusion_matrix[i][IS_EMPTY]) tp++;
 		else if(detection == confusion_matrix[i][IS_BLACK]) tp++;
 		else if(detection == confusion_matrix[i][IS_WHITE]) tp++;
+		else if(detection == confusion_matrix[i][IS_BLACK_KING]) tp++;
+		else if(detection == confusion_matrix[i][IS_WHITE_KING]) tp++;
 		else if(detection != EMPTY_SQUARE && confusion_matrix[i][IS_EMPTY] == EMPTY_SQUARE) fp++;
 		else if(detection == BLACK_MAN_ON_SQUARE && confusion_matrix[i][IS_BLACK] != BLACK_MAN_ON_SQUARE) fp++;
 		else if(detection == WHITE_MAN_ON_SQUARE && confusion_matrix[i][IS_WHITE] != WHITE_MAN_ON_SQUARE) fp++;
+		else if(detection == BLACK_KING_ON_SQUARE && confusion_matrix[i][IS_BLACK_KING] != BLACK_KING_ON_SQUARE) fp++;
+		else if(detection == WHITE_KING_ON_SQUARE && confusion_matrix[i][IS_WHITE_KING] != WHITE_KING_ON_SQUARE) fp++;
 		else if(detection == EMPTY_SQUARE && confusion_matrix[i][IS_EMPTY] != EMPTY_SQUARE) fn++;
 		else if(detection == EMPTY_SQUARE && confusion_matrix[i][IS_BLACK] == BLACK_MAN_ON_SQUARE) fn++;
 		else if(detection == EMPTY_SQUARE && confusion_matrix[i][IS_WHITE] == WHITE_MAN_ON_SQUARE) fn++;
+		else if(detection == EMPTY_SQUARE && confusion_matrix[i][IS_BLACK_KING] == BLACK_KING_ON_SQUARE) fn++;
+		else if(detection == EMPTY_SQUARE && confusion_matrix[i][IS_WHITE_KING] == WHITE_KING_ON_SQUARE) fn++;
 		else tn++;
 	}
 }
