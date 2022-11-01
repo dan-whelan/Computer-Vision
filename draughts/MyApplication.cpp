@@ -594,6 +594,7 @@ void initialiseConfusionMatrix(int *ground_truth, int current_index, int confusi
 	for(int i = current_index, j = 0; j < NUMBER_OF_SQUARES; i++, j++) {
 		if(ground_truth[j] == BLACK_MAN_ON_SQUARE) confusion_matrix[i][IS_BLACK] = BLACK_MAN_ON_SQUARE;
 		else if(ground_truth[j] == WHITE_MAN_ON_SQUARE) confusion_matrix[i][IS_WHITE] = WHITE_MAN_ON_SQUARE;
+		// Added for Part 5 of Assignment
 		else if(ground_truth[j] == WHITE_KING_ON_SQUARE) confusion_matrix[i][IS_WHITE_KING] = WHITE_KING_ON_SQUARE;
 		else if(ground_truth[j] == BLACK_KING_ON_SQUARE) confusion_matrix[i][IS_BLACK_KING] = BLACK_KING_ON_SQUARE;
 		else confusion_matrix[i][IS_EMPTY] = EMPTY_SQUARE;
@@ -630,39 +631,39 @@ Mat transformImage(Mat& image) {
 // Detects the Pieces on the gameboard based on the Probability image created by backprojection
 Mat detectObjects(Mat& image, Mat& sample, Scalar colour) {
 		//Prepare Matrices and vectors required for the processing 
-		Mat hsv_image, hsv_sample_image, probability_image, grey_probability_image, 
+		Mat hls_image, hls_sample_image, probability_image, grey_probability_image, 
 			binary_probability_image, morphed_probability_image;
-		vector<Mat> hsv_sample_planes, hsv_image_planes, probability_image_planes;
+		vector<Mat> hls_sample_planes, hls_image_planes, probability_image_planes;
 		
-		cvtColor(sample, hsv_sample_image, COLOR_BGR2HSV);
-		cvtColor(image, hsv_image, COLOR_BGR2HSV);
-		split(hsv_sample_image, hsv_sample_planes);
-		split(hsv_image, hsv_image_planes);
+		cvtColor(sample, hls_sample_image, COLOR_BGR2HSV);
+		cvtColor(image, hls_image, COLOR_BGR2HSV);
+		split(hls_sample_image, hls_sample_planes);
+		split(hls_image, hls_image_planes);
 
 		const int* channel_numbers = { 0 };
 		float channel_range[] = { 0.0, 255.0 };
 		const float* channel_ranges = channel_range;
 		int number_of_bins = NUMBER_OF_BINS;
 		int number_of_channels = 3;
-		MatND histogram[number_of_channels];
+		MatND sample_histogram[number_of_channels];
 		
 		// Calculate Histogram for each channel
 		for(int channel = 0; channel < number_of_channels; channel++) 
 		{
-			calcHist(&hsv_sample_planes[channel], 1, channel_numbers, Mat(), histogram[channel], 1, &number_of_bins, &channel_ranges);
+			calcHist(&hls_sample_planes[channel], 1, channel_numbers, Mat(), sample_histogram[channel], 1, &number_of_bins, &channel_ranges);
 		}
 
 		// Calculate BackProjection for Image
 		vector<Mat> probabilities(number_of_channels);
 		for(int channel = 0; channel < number_of_channels; channel++) 
 		{
-			calcBackProject(&hsv_image_planes[channel], 1, channel_numbers, histogram[channel], probabilities[channel], &channel_ranges);
+			calcBackProject(&hls_image_planes[channel], 1, channel_numbers, sample_histogram[channel], probabilities[channel], &channel_ranges);
 		}
 		merge(probabilities, probability_image);
-
 		// Binary Threshold Probability Image with Fixed Threshold
 		split(probability_image, probability_image_planes);
-		grey_probability_image = probability_image_planes[2];		
+		cvtColor(probability_image, grey_probability_image, COLOR_HSV2BGR);
+		cvtColor(grey_probability_image, grey_probability_image, COLOR_BGR2GRAY);
 		threshold(grey_probability_image, binary_probability_image, 100, number_of_bins, THRESH_BINARY | THRESH_OTSU);
 
 		//Perform a closing followed by opening Morphology to gain more accurate representation of Object location
@@ -846,7 +847,7 @@ void performGroundTruthAnalysis(int& tp, int& fp, int& fn, int& tn, int pdn_squa
 	for(int i = index*NUMBER_OF_SQUARES, j = 0; j < NUMBER_OF_SQUARES; i++, j++) 
 	{
 		int detection = pdn_squares_with_pieces[j][1];
-		if(detection == confusion_matrix[i][IS_EMPTY]) tp++;
+		if(detection == confusion_matrix[i][IS_EMPTY]) tn++;
 		else if(detection == confusion_matrix[i][IS_BLACK]) tp++;
 		else if(detection == confusion_matrix[i][IS_WHITE]) tp++;
 		else if(detection == confusion_matrix[i][IS_BLACK_KING]) tp++;

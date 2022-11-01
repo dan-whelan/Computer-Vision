@@ -1,0 +1,10 @@
+\contentsline {section}{\numberline {1}Part 1 - Pixel Classification}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}High Level Overview of Problem Statement}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Processing of Image}{3}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Results}{4}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Comments and Final Remarks}{5}{subsection.1.4}%
+\contentsline {section}{\numberline {2}Part 2 - Piece Detection}{6}{section.2}%
+\contentsline {subsection}{\numberline {2.1}High Level Overview of Problem Statement}{6}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Determining Pieces on Squares}{6}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Results}{7}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Comments and Final Remarks}{8}{subsection.2.4}%
