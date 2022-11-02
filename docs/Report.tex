@@ -241,4 +241,77 @@
     \par
     Overall, I would say the processes used for this part of the assignment have been a success and provide an accurate representation of the moves made during the video of a draughts game.
 
+    \newpage
+    \section{Part 4 - Edge and Corner Detection}
+
+    \subsection{High Level Overview of Problem Statement}
+    \par
+    Process any static image of the board and attempt to determine the locations of the four corners, compare the following approaches:
+    \begin{itemize}
+        \item Hough Transformation for Lines spanning the complete image
+        \item Contour Following and Line Segment extraction
+        \item Use of the \emph{findChessboardCorners()} in OpenCV
+    \end{itemize}
+    \subsection{Hough Transformation for Lines Method}
+    \par
+    Firstly using a Greyscale image of the playing board with no pieces, a Canny Edge detection was performed in order to get a Binary Edge Image of the board. Following this, a Hough Transformation for lines was done. This returns a series of lines in \(\rho,\theta\) form.
+    Following this I did a k-means clustering in order to determine lines that were vertical and those that were horizontal, multiplying \(\theta\) by 2 in order to bring the lines closer to their exact orientation (as numbers close to 0/360 and 90/180 may confuse the algorithm
+    as to which orientation they belong). Although I did not manage to finish this implementation the following steps would be; I would find the intersections between lines of different orientations and in order to find the corners I would determine points with a large euclidean 
+    distance between end points. Finally I would use these points to determine the corners of the playing board.
+    \begin{center}
+        \includegraphics[scale=0.3]{HoughLines.png}
+        Binary Edge Image and Hough Lines Image
+    \end{center}
+    
+    \newpage
+    \subsection{Contour Following and Extracting Line Segments}
+    \par
+    Similarly to the Hough Transformation, I did a Canny Edge Detection on a Greyscale image of the board and received a Binary Edge Image. Following this I determined the contours present in this image and a series of Boundary Chain Codes were obtained. From these I was then able to 
+    extract Line segments from this using Contour Segmentation. Following this, I would have detected interections in the line segments and looked for line segments that rest on a similar angle to other segments in order to create larger segments. Once this was finished I would, as above,
+    determine lines with a large euclidean distance between end points and from this determine the corners of the playing board.
+    \begin{center}
+        \includegraphics[scale=0.3]{LineSegments.png}
+        Binary Edge Image and Line Segments Detected
+    \end{center}
+
+    \subsection{\emph{findChessboardCorners()}}
+    \par
+    the \emph{findChessboardCorners()} function in OpenCV is used when calibrating cameras. The function takes in a Greyscale image (and if colour, converts to Greyscale) that may or may not contain a checkerboard pattern and returns true if one is detected and false if not. It also returns a vector of internal corners that the 
+    function has detected in the checkerboard pattern. The algorithm converts the Greyscale image to a Binary Image and then thresholds with a high fixed threshold to make an extreme distinction between white squares and black squares. The Binary Image is then dilated in order to separate the squares and split the corners apart.
+    The algorithm does this dilation multiple times as some squares do not split properly with one dilation. However, the image cannot be dilated too much as squares reduce in size each time and become too small to detect. The algorithm then detects the squares using Contour Following and then uses the points at which there are 
+    two extreme gradients meet going in different directions. It then cleans the number of corners detected based on a checkerboard pattern and returns all of the detected corners (Figure 7).
+    
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.25]{findChessboardCorners.png}
+        \caption{\emph{findChessboardCorners()} Result (7x7)}
+    \end{figure}
+
+    \subsection{Comments and Final Remarks}
+    \par
+    Each of these methods allow for the location of the chessboard corners. However, some will work in a more accurate way than others. The Hough Transformation for Lines allows for easy detection of lines, their orientation and intersection points, however, As can be seen in the Hough Lines image, a large number of "noisy" lines 
+    are also detected making it difficult to determine which intersection points may be corners and which are irrelevant. A RANSAC algorithm may help reduce this in normal instances but due to the ornate frame of the board in this particular instance it may only remove a small number of unimportant lines. 
+    \par
+    Comparing this to the Line Segment Extraction from finding Contours, This returns a large number of small lines, that could be used to detect squares and in turn follow a similar algorithm to that of \emph{findChessboardCorners()}, but again in this instance, the board frame causes issues creating unimportant line segments and makes
+    the edge detection "noisy". 
+    \par
+    Using \emph{findChessboardCorners()} returned an accurate depiction of the corners present internally in the chessboard. However, this used a Search size of 7x7 rather than 8x8, which would be required for this board. Again, the frame of the board causes issues for this function as, according to OpenCV documentation,\emph{"The function requires white space
+    around the board to make the detection more robust"} as a dark border causes the external black squares to be segmented incorrectly and hence fails to detect the corners correctly.
+    \par
+    Overall, when detecting the checkerboard corners, One could combing the Hough Transformation for Lines, with the Line Segments detected to remove noise and then check intersections and euclidean distances of Hough Lines to get accurate 
+    corners of the board.
+
+    \newpage
+    \section{Part 5 - Detect King Pieces}
+    \subsection{High Level Overview of Problem Statement}
+    \par
+    Develop Code to distinguish between normal pieces and King pieces.
+
+    \subsection{Processing King Pieces}
+    \par
+    
+
+
+
+
 \end{document}

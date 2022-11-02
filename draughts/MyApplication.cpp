@@ -282,7 +282,7 @@ void MyApplication()
 	 *  (b) VIDEO
 	 *  (c) EDGES
 	*/
-	int mode = VIDEO;
+	int mode = IMAGE;
 
 	// Load in sample images for BackProjection and General Parameter setup
 	int pieces[32];
@@ -451,11 +451,13 @@ void MyApplication()
 		}	
 		else
 		{
-			Mat binary_edge_image, hough_line_image, boundary_chain_code_image, line_segments_image;
+			Mat binary_edge_image, hough_line_image, boundary_chain_code_image, line_segments_image, black_hough, black_line_segment;
 			Canny(static_board_image, binary_edge_image, 50, 255);
 			cvtColor(binary_edge_image, hough_line_image, COLOR_GRAY2BGR);
 			boundary_chain_code_image = hough_line_image.clone();
 			line_segments_image = hough_line_image.clone();
+			black_hough =  Mat::zeros(hough_line_image.size(), hough_line_image.type());
+			black_line_segment = Mat::zeros(hough_line_image.size(), hough_line_image.type());
 
 			// Boundary Chain Code
 			vector<vector<Point>> contours;
@@ -463,22 +465,19 @@ void MyApplication()
 
 			findContours(binary_edge_image, contours, hierarchy, RETR_CCOMP, CHAIN_APPROX_SIMPLE);
 
-			for(int contour_number = 0; contour_number < contours.size(); contour_number++) 
-			{
-				drawContours(boundary_chain_code_image, contours, contour_number, Scalar(rand()&0xFF, rand()&0xFF, rand()&0xFF), 1, LINE_AA, hierarchy);
-			}
-
 			// Extract line segments
 			vector<vector<Point>> approx_contours(contours.size());
 
 			for(int contour_number = 0; contour_number < approx_contours.size(); contour_number++) 
 			{
-				approxPolyDP(Mat(contours[contour_number]), approx_contours[contour_number], 5, true);
+				approxPolyDP(Mat(contours[contour_number]), approx_contours[contour_number], 7, true);
 			}
 			
 			for(int contour_number = 0; contour_number < contours.size(); contour_number++) 
 			{
 				drawContours(line_segments_image, approx_contours, contour_number, Scalar(rand()&0xFF, rand()&0xFF, rand()&0xFF), 1, LINE_AA, hierarchy);
+				drawContours(black_line_segment, approx_contours, contour_number, Scalar(rand()&0xFF, rand()&0xFF, rand()&0xFF), 1, LINE_AA, hierarchy);
+
 			}
 
 			// Hough Line Transformation
@@ -501,31 +500,31 @@ void MyApplication()
 			Mat labels, centers;
 			int K = 2;
 			kmeans(points, K, labels, criteria, 10, KMEANS_PP_CENTERS, centers);
-			vector<vector<Vec2f>> segments;
+			vector<vector<Vec2f>> lines_with_orientation;
 			for(int i = 0; i < K; i++)
 			{
-				vector<Vec2f> segment;
-				segments.push_back(segment);
+				vector<Vec2f> line_with_orientation;
+				lines_with_orientation.push_back(line_with_orientation);
 			}
 
 			for(int i = 0; i < lines.size(); i++)
 			{
 				Vec2f line = lines[i];
 				if(labels.at<float>(i) == 0)
-					segments[0].push_back(line);
-				else segments[1].push_back(line);
+					lines_with_orientation[0].push_back(line);
+				else lines_with_orientation[1].push_back(line);
 			}
-
+			
 			// Draw the lines
-			for(int i = 0; i < segments.size(); i++)
+			for(int i = 0; i < lines_with_orientation.size(); i++)
 			{
 				int scalar_value = rand()&0xFF;
 				Scalar colour;
 				if(i == 0) colour = Scalar(0,0,255);
 				else colour = Scalar(255,0,0);
-				for( size_t j = 0; j < segments[i].size(); j++ )
+				for( size_t j = 0; j < lines_with_orientation[i].size(); j++ )
 				{
-					Vec2f lines = segments[i][j];
+					Vec2f lines = lines_with_orientation[i][j];
 					float rho = lines[0], theta = lines[1];
 					Point pt1, pt2;
 					double a = cos(theta), b = sin(theta);
@@ -535,20 +534,22 @@ void MyApplication()
 					pt2.x = cvRound(x0 - 1000*(-b));
 					pt2.y = cvRound(y0 - 1000*(a));
 					line( hough_line_image, pt1, pt2, colour, 1, LINE_AA);
+					line( black_hough, pt1, pt2, colour, 1, LINE_AA);
 				}
 			}
 
 			// findChessboardCorners
 			vector<Point2f> corners;
-			Size pattern_size(4,4);
+			Size pattern_size(7,7); // <-- Cannot find 8x8 (see report)
 			bool is_pattern = findChessboardCorners(static_board_image, pattern_size, corners);
-			if(is_pattern) 
-				cornerSubPix(static_board_image, corners, Size(11, 11), Size(-1, -1), TermCriteria(TermCriteria::EPS + TermCriteria::MAX_ITER, 30, 0.1));
-			drawChessboardCorners(static_board_image, pattern_size, Mat(corners), is_pattern);
+			if(is_pattern)
+				drawChessboardCorners(static_board_image, pattern_size, Mat(corners), is_pattern);
 
 			imshow("Canny Edge Detection", binary_edge_image);
 			imshow("Lines Detected", hough_line_image);
+			imshow("Lines image", black_hough);
 			imshow("Line Segments Detected", line_segments_image);
+			imshow("Line Segments", black_line_segment);
 			imshow("FindChessboardCorners", static_board_image);
 			waitKey();
 		}
@@ -582,11 +583,12 @@ void determinePieceLocations(Mat& transformed_draughts_image, Mat& black_squares
 		Mat all_pieces_on_board;
 		addWeighted(white_pieces_clean, 1, black_pieces_clean, 1, 0.0, all_pieces_on_board);
 
+
 		// Detect Whether a Square contains a white piece or a black piece or neither
 		determineManOnSquare(pdn_squares_with_pieces, portable_draughts_notation, all_pieces_on_board, black_squares_cca, BLACK_SQUARE);
-		// imshow("Piece Detection", all_pieces_on_board);
+		imshow("Piece Detection", all_pieces_on_board);
 		// imshow("Transformed Image", transformed_draughts_image);
-		// waitKey();
+		waitKey();
 }
 
 // Initialises the Confusion Matrix to allow for comparison with detections
