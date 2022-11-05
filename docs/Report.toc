@@ -8,3 +8,19 @@
 \contentsline {subsection}{\numberline {2.2}Determining Pieces on Squares}{6}{subsection.2.2}%
 \contentsline {subsection}{\numberline {2.3}Results}{7}{subsection.2.3}%
 \contentsline {subsection}{\numberline {2.4}Comments and Final Remarks}{8}{subsection.2.4}%
+\contentsline {section}{\numberline {3}Part 3 - Video Processing}{9}{section.3}%
+\contentsline {subsection}{\numberline {3.1}High Level Overview of Problem Statement}{9}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Video Processing}{9}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Results}{10}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Comments and Final Remarks}{11}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Part 4 - Edge and Corner Detection}{12}{section.4}%
+\contentsline {subsection}{\numberline {4.1}High Level Overview of Problem Statement}{12}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Hough Transformation for Lines Method}{12}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Contour Following and Extracting Line Segments}{13}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}\emph {findChessboardCorners()}}{13}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Comments and Final Remarks}{14}{subsection.4.5}%
+\contentsline {section}{\numberline {5}Part 5 - Detect King Pieces}{15}{section.5}%
+\contentsline {subsection}{\numberline {5.1}High Level Overview of Problem Statement}{15}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Processing King Pieces}{15}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Results}{16}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Comments and Final Remarks}{17}{subsection.5.4}%

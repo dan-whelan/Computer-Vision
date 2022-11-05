@@ -340,6 +340,24 @@ void MyApplication()
 			// Determine the current location of the pieces and store in a pdn array
 			determinePieceLocations(transformed_draughts_image, black_squares_image, white_squares_image, black_pieces_image, white_pieces_image, portable_draughts_notation, pdn_squares_with_pieces);
 
+			// Hough Transformation for circles
+			Mat grey_transformed_image;
+			cvtColor(transformed_draughts_image, grey_transformed_image, COLOR_BGR2GRAY);
+
+			vector<Vec3f> circles;
+			HoughCircles(grey_transformed_image, circles, HOUGH_GRADIENT, 1, grey_transformed_image.rows/16, 100, 30, 0, 80);
+
+			for(size_t i = 0; i < circles.size(); i++)
+			{
+				Vec3f circle_found = circles[i];
+				Point center = Point(circle_found[0], circle_found[1]);
+				circle(transformed_draughts_image, center, 1, Scalar(0,100,100), 3, LINE_AA);
+				int radius = circle_found[2];
+				circle(transformed_draughts_image, center, radius, Scalar(255,0,255), 1, LINE_AA);
+			}
+			imshow("Circles Detected", transformed_draughts_image);
+			waitKey(); 
+
 			// Perform Ground Truth Analysis Using Provided Ground Truth
 			performGroundTruthAnalysis(tp, fp, fn, tn, pdn_squares_with_pieces, image_index, confusion_matrix);
 		}
@@ -429,9 +447,9 @@ void MyApplication()
 				{
 					isChecked = true;
 				}
-				// imshow("Video", current_frame);
-				// imshow("Foreground", foreground_image);
-				// waitKey(30);
+				imshow("Video", current_frame);
+				imshow("Foreground", foreground_image);
+				waitKey(30);
 				draughts_video >> current_frame;
 				frame_number++;
 			}
@@ -477,9 +495,7 @@ void MyApplication()
 			{
 				drawContours(line_segments_image, approx_contours, contour_number, Scalar(rand()&0xFF, rand()&0xFF, rand()&0xFF), 1, LINE_AA, hierarchy);
 				drawContours(black_line_segment, approx_contours, contour_number, Scalar(rand()&0xFF, rand()&0xFF, rand()&0xFF), 1, LINE_AA, hierarchy);
-
 			}
-
 			// Hough Line Transformation
 			vector<Vec2f> lines; 
 			HoughLines(binary_edge_image, lines, RHO, CV_PI/180, 135);
@@ -587,7 +603,6 @@ void determinePieceLocations(Mat& transformed_draughts_image, Mat& black_squares
 		// Detect Whether a Square contains a white piece or a black piece or neither
 		determineManOnSquare(pdn_squares_with_pieces, portable_draughts_notation, all_pieces_on_board, black_squares_cca, BLACK_SQUARE);
 		imshow("Piece Detection", all_pieces_on_board);
-		// imshow("Transformed Image", transformed_draughts_image);
 		waitKey();
 }
 

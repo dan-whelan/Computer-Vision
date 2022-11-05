@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+\documentclass[11pt]{article}
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{hyperref}
@@ -16,11 +16,8 @@
 \newpage
 
     \section*{Question Statement}
-    You are asked to develop a system to automatically analyse a game of draughts (also known as checkers).
-    \begin{center}
-        \includegraphics[scale=0.5]{DraughtsGame1Move13.png}
-    \end{center}
-    As this assignment was released in five individual parts, this report will follow a similar structure, handling each part in its own section.
+    You are asked to develop a system to automatically analyse a game of draughts (also known as checkers).As this assignment was released in five individual parts, this report will follow a similar structure, handling each part in its own section.
+    \tableofcontents
     \newpage
     
     \section{Part 1 - Pixel Classification}
@@ -80,7 +77,7 @@
     \subsection{Comments and Final Remarks}
     \par
     As discussed previously, there are some issues with the overall classification of unimportant pixels and this would need improving going forward. One way in doing this would be to gather a larger collection of samples for each section
-    That we are looking for, and possibly remove some issues that may be present in these samples, for instance, the sample images taken for the white squares (Figure 2) contains a darker colour that is not necessarily representative of the
+    that we are looking for, and possibly remove some issues that may be present in these samples, for instance, the sample images taken for the white squares (Figure 2) contains a darker colour that is not necessarily representative of the
     regions we are attempting to classify, as a result, this possibly led to the brown table the board is resting on being classified as a "White Square".
     \begin{figure}
         \centering
@@ -89,12 +86,12 @@
     \end{figure}
     \par
     Following this, for images with poor lighting this process will not work as the Probability Image produced from Back Projection may fail to discover any regions that have a similar HSV histogram to the Sample Images, and this would only be
-    rectified by adding additional sample images specific to that lighting scenario. In Essence, This process may not work in a general context due to good lighting conditions being required. Following this, Equalisation is not a vaid way of solving
+    rectified by adding additional sample images specific to that lighting scenario. In Essence, This process may not work in a general context due to good lighting conditions being required. On top of this, Equalisation is not a vaid way of solving
     this issue as this alters the Histogram of the initial image and hence any Back Projection using sample images will not return an accurate Probability Image.
     \par
     As a final remark on this part of the assignment, I feel that my method of classifying pixels was very effective when focusing only on the draughts board and successfully identified pixels that belonged to the different regions we were looking for.
-    However, when it came to classification outside of the board, the process failed to classify pixels that were unimportant (\emph{None of the Above}) and hence the overall process, whilst successful in parts, overall returned middling results regarding classification.
-    One way to possibly improve this is to also take sample images of the areas outside of the board (table, frame etc) and do some analysis to confirm they are present and hence classify the regions correctly.
+    However, when it came to classification outside of the board, the process failed to classify pixels that were unimportant (\emph{None of the Above}) and hence the overall process, whilst successful in parts, returned middling results regarding classification.
+    One way to possibly improve this is to also take sample images of the areas outside of the board (table, frame etc) and do some analysis to confirm they are present and hence classify the regions appropriately.
     
     \newpage
     \section{Part 2 - Piece Detection}
@@ -115,7 +112,7 @@
     Following this, I performed some cleaning of the region detection by determining whether the area classified as a certain pixel was part of that class. For example, some pixels were wrongly classified as \emph{White Pieces} when they should not have been. To do this, a 
     comparison was done between the CCA matrices to determine whether a pixel classified as a \emph{White Piece} was also detected resting on a \emph{Black Square}. By doing this a large number of pixels that had been incorrectly classified were corrected (Figure 3).
     \par
-    Furthermore, I initialised a Portable Draughts Notation (PDN) Matrix in order to number the pieces that had been detected on playing squares. The actual detection of pieces was done by determining the center point of a square (Being the number of pixels in the transformed column
+    Furthermore, I initialised a Portable Draughts Notation (PDN) Matrix in order to number the pieces that had been detected on playing squares. The actual detection of pieces was done by determining the center point of a square (Being half of the number of pixels in a standard transformed column/row
     divided by the Number of playing squares on each side), and seeing whether this center point was classified as both a Piece and a Playing Square, and hence storing this piece in the PDN matrix.   
 
     \newpage
@@ -162,13 +159,13 @@
     As can be seen by the results of this part Piece Detection and numbering based on the PDN system was very successful. This is thanks in part to cleaning the classification of pixels received
     from processes in part 1. As can be seen in Figure 4, cleaning the classification of these squares was a massive advantage in determining the position of pieces on the board. This is particularly
     true for black piece and square classification as due to lighting and shadows in the images, performing BackProjection resulted in receiving inaccurate probability images for these regions. However, by
-    using the information received via the probability images of their white counterparts, it was possible to improve the classification of these pixels, as can be seen above.
+    using the information received via the probability images of their white counterparts, it was possible to improve the classification of these pixels, as can be seen above (Figure 4).
     \par
     Furthermore, the use of the center of squares as a point of reference for determining whether a piece was present or not also led to an efficient program as there was no processing of entire squares 
     (reducing the pixels checked per square from 2,500 [\((\dfrac{400}{8})^2\)] to 1). This also improved detection accuracy as it is most likely that the piece, when placed, will in some way or another cover 
     that center pixel.
     \par
-    Overall, I feel that this part of the assignment strongly detects pieces and correctly places them on a PDN representation of the board with a strong level of accuracy. 
+    Overall, I feel that this part of the detects pieces in an appropriate manner and correctly places them inside a PDN array representation of the board with a strong level of accuracy. 
 
     \newpage
     \section{Part 3 - Video Processing}
@@ -178,13 +175,13 @@
 
     \subsection{Video Processing}
     \par
-    With the input of an RGB video I did a similar initial process to thise of the static images and performed a Perspective Transformation using the given corners to remove any external information not relevant to the
-    draughts game (table, frame etc.). Following on from this, I applied the Gaussian Mixture Model (GMM) creating a foreground mask for the frame, which I then performed a Binary Threshold with a high fixed threshold of 150 on
-    in order to remove any noise from this mask. Furthermore, I then applied some Mathematical Morphology operations to this thresholded image using a 3x3 structuring element, performing a closing operation followed by an opening
+    With the input of an RGB video I did a similar initial process to that of the static images and performed a Perspective Transformation using the given corners to remove any external information not relevant to the
+    draughts game (table, frame etc.). Following on from this, I applied the Gaussian Mixture Model (GMM) creating a foreground mask for the frame, on which I then performed a Binary Threshold, with a high fixed threshold of 150, 
+    in order to remove any noise from this mask. Furthermore, I applied some Mathematical Morphology operations to this thresholded image using a 3x3 structuring element, performing a closing operation followed by an opening
     operation in order to get a more accurate representation of where the moving object pixels are present.
     \par
     With this Binary Moving Object image, I then counted the number of white pixels (i.e moving) that were present in the frame and ratioed this against the total number of pixels present in the frame. If this ratio was smaller than
-    the fixed tolerance of 3\%, and only after being higher than the tolerance in the frames just previous, this frame would be analysed and the system would then wait for the ratio to become higher than this tolerance again before allowing
+    a determined, through qualitative analysis, fixed tolerance of 3\%, and only after being higher than the tolerance in the frames just previous, this frame would be analysed and the system would then wait for the ratio to become higher than this tolerance again before allowing
     another frame to be analysed.
     \par
     In essence, the main functionality of this process is to wait until the number of moving object pixels has dropped below a certain tolerance level then, and only then, analysing a frame of the video.
@@ -239,7 +236,7 @@
     would no longer be selected for analysis as the number of moving object pixels as increased over the tolerance. A way of possibly fixing this is by increasing the learning rate of the Gaussian Mixture Model used and this would perhaps 
     allow for a quicker dissolution of "old" moving object pixels.
     \par
-    Overall, I would say the processes used for this part of the assignment have been a success and provide an accurate representation of the moves made during the video of a draughts game.
+    Overall, I would say the processes used for this part of the assignment have been a success and provide an accurate and appropriate representation of the moves made during the video of a draughts game.
 
     \newpage
     \section{Part 4 - Edge and Corner Detection}
@@ -254,8 +251,8 @@
     \end{itemize}
     \subsection{Hough Transformation for Lines Method}
     \par
-    Firstly using a Greyscale image of the playing board with no pieces, a Canny Edge detection was performed in order to get a Binary Edge Image of the board. Following this, a Hough Transformation for lines was done. This returns a series of lines in \(\rho,\theta\) form.
-    Following this I did a k-means clustering in order to determine lines that were vertical and those that were horizontal, multiplying \(\theta\) by 2 in order to bring the lines closer to their exact orientation (as numbers close to 0/360 and 90/180 may confuse the algorithm
+    Firstly using a Greyscale image of the playing board with no pieces, a Canny Edge detection was performed in order to get a Binary Edge Image of the board. Following this, a Hough Transformation for lines was done. This returns a series of lines in (\(\rho,\theta\)) form.
+    Following this I did a k-means clustering in order to determine lines that were vertical and those that were horizontal, multiplying \(\theta\) by 2 in order to bring the lines closer to their exact orientation (as numbers not overly close to 0/360 and 90/180 may confuse the algorithm
     as to which orientation they belong). Although I did not manage to finish this implementation the following steps would be; I would find the intersections between lines of different orientations and in order to find the corners I would determine points with a large euclidean 
     distance between end points. Finally I would use these points to determine the corners of the playing board.
     \begin{center}
@@ -267,7 +264,7 @@
     \subsection{Contour Following and Extracting Line Segments}
     \par
     Similarly to the Hough Transformation, I did a Canny Edge Detection on a Greyscale image of the board and received a Binary Edge Image. Following this I determined the contours present in this image and a series of Boundary Chain Codes were obtained. From these I was then able to 
-    extract Line segments from this using Contour Segmentation. Following this, I would have detected interections in the line segments and looked for line segments that rest on a similar angle to other segments in order to create larger segments. Once this was finished I would, as above,
+    extract Line segments from this using Contour Segmentation. Following this, I would have detected interections in the line segments and looked for line segments that rest on a similar angle to other segments in order to create larger segments. Once this was finished I would, as previous,
     determine lines with a large euclidean distance between end points and from this determine the corners of the playing board.
     \begin{center}
         \includegraphics[scale=0.3]{LineSegments.png}
@@ -277,13 +274,13 @@
     \subsection{\emph{findChessboardCorners()}}
     \par
     the \emph{findChessboardCorners()} function in OpenCV is used when calibrating cameras. The function takes in a Greyscale image (and if colour, converts to Greyscale) that may or may not contain a checkerboard pattern and returns true if one is detected and false if not. It also returns a vector of internal corners that the 
-    function has detected in the checkerboard pattern. The algorithm converts the Greyscale image to a Binary Image and then thresholds with a high fixed threshold to make an extreme distinction between white squares and black squares. The Binary Image is then dilated in order to separate the squares and split the corners apart.
+    function has detected in the checkerboard pattern. The algorithm converts the Greyscale image to a Binary Image and then thresholds with a high fixed threshold to make an extreme distinction between white squares and black squares. The Binary Image is then dilated in order to separate the black squares and split the corners apart.
     The algorithm does this dilation multiple times as some squares do not split properly with one dilation. However, the image cannot be dilated too much as squares reduce in size each time and become too small to detect. The algorithm then detects the squares using Contour Following and then uses the points at which there are 
     two extreme gradients meet going in different directions. It then cleans the number of corners detected based on a checkerboard pattern and returns all of the detected corners (Figure 7).
     
     \begin{figure}
         \centering
-        \includegraphics[scale=0.25]{findChessboardCorners.png}
+        \includegraphics[scale=0.4]{findChessboardCorners.png}
         \caption{\emph{findChessboardCorners()} Result (7x7)}
     \end{figure}
 
@@ -298,7 +295,7 @@
     Using \emph{findChessboardCorners()} returned an accurate depiction of the corners present internally in the chessboard. However, this used a Search size of 7x7 rather than 8x8, which would be required for this board. Again, the frame of the board causes issues for this function as, according to OpenCV documentation,\emph{"The function requires white space
     around the board to make the detection more robust"} as a dark border causes the external black squares to be segmented incorrectly and hence fails to detect the corners correctly.
     \par
-    Overall, when detecting the checkerboard corners, One could combing the Hough Transformation for Lines, with the Line Segments detected to remove noise and then check intersections and euclidean distances of Hough Lines to get accurate 
+    Overall, when detecting the checkerboard corners, one could combine the Hough Transformation for Lines, with the Line Segments detected to remove noise and then check intersections and euclidean distances of Hough Lines to get accurate 
     corners of the board.
 
     \newpage
@@ -309,9 +306,56 @@
 
     \subsection{Processing King Pieces}
     \par
+    This part of the assignment is one that I struggled with quite a lot. Particularly detecting a king piece once it had left the square in which it becomes a king was very difficult with the system for piece detection I had previously implemented in part 2. Currently the sytem implemented for King detection is to check what colour the piece is and if it on the 
+    opposite side of the board to where it started (i.e final column squares). However, I had some ideas for how this might be implemented in a more robust detection system.
+    \par
+    One way would be to detect the Rectangularity and Elongatedness of the pieces by getting a Minimum Bounding Rectangle of each of the pieces from contours detected, and hence, as a King piece is two standard pieces stacked on top of each other, pieces detected with an elongatedness that is twice that of a standard piece may be considered a King. 
+    \par
+    The use of the above method, detecting features, could further be improved by using Hough Transformation for Circles in order to remove Minimum Bounding Rectangles that are detected in the image and are irrelevant to the pieces themselves. For example, the playing squares on the board may cause a Minimum Bounding Rectangle to be detected and could be incorrectly classified
+    as a King due to a high Rectangularity and possibly some Elongatedness. By coinciding where the Hough Circles and Minimum Bounding Rectangles overlap, we can expect that we are only dealing with playing pieces and not unneccessary parts of the draughts game.
+
+    \begin{center}
+        \includegraphics[scale=0.35]{HoughCircles.png}
+        \newline
+        Hough Transformation for Circles
+    \end{center}
+
+    \newpage
+    \begin{figure}
+        \centering
+        \includegraphics[scale=1]{AssignPt5Res.png}
+        \caption{Ground Truth Analysis Results}
+    \end{figure}
+    \subsection{Results}
+    \par
+    This part of the assignment improves slightly upon the algorithm that was developed in Part 2. As can be seen by the Ground Truth Analysis the number of True Positive detections has increased by 45 additional correct detections on the iteration of the algorithm in Part 2, reducing the False Positive detections to 21. This highlights that a lot of the false positive detections from
+    Part 2 were due to the fact that Kings were included in the ground truth and the algorithm was not checking for these. 
+    \par
+    However, despite these positive results, it is clear that it is just chance that in this particular game of draughts, the King pieces did not move very often from the 4 squares that they become King from. This may also highlight that the remaining False Positive detections by the algorithm are in fact King pieces that were not classified as such by the algorithm and in fact were
+    classified as normal pieces. Furthermore, as the algorithm only covers 4 of the total 32 playing squares in the game for each colour playing piece, the detection of King Pieces, per playing piece, covers only 12.5\% of all possible positions that a King piece may occupy and in a game of draughts, and at that, it is an unlikely game to occur where King pieces do not move, as more often than not the King pieces are
+    moved from this opposite row near immediately in order to use these pieces in play.
+    \par 
+    Overall though the results are good, they only apply to a very small subset of cases that is not representative of a vast majority of draughts games.
     
+    \newpage
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.2]{HoughCirclesFail.png}
+        \caption{Circles not present being Detected}
+    \end{figure}
+    \subsection{Comments and Final Remarks}
+    As discussed previously, the results from this part highlights that this method worked to a certain degree, however, is clearly not an appropriate solution and is not representative of a vast number of possible draughts games that could be passed through this Computer Vision Program. However, as previously discussed there is a method that could be implemented in order to better 
+    represent the position of King Pieces in a much more appropriate manner.
+    \par
+    However, this theory is not without its faults. One initial error is that when enacting a Perspective Transformation on an image it causes objects that are farther in the background to become distorted and "stretch" them in a way. There are two main issues that this causes. The first is that when the Hough Transformation for Circles is performed it becomes difficult for the algorithm
+    to detect circles as they become elongated and the edges they produce are not circular enough for the Hough Circle algorithm to detect them. It could be suggested to increase the maximum radius that is being searched for, but this introduces new issues as the draughts pieces being in close proximity create circles that are smaller than the maximum radius but are in fact not present.
+    (Figure 9).
+    \par
+    Another issue with this stretching of the pieces comes from the determining of features of each of the pieces. As these pieces have been stretched The features detected by using the Minimum Bounding Rectangle are going to change. Naturally the Elongatedness and Rectangularity of the detected pieces are going to increase. As a result of this, these values may surpass the threshold used to 
+    determine whether a piece is a King or not, and hence could lead to the misclassification of certain pieces, giving an inaccurate representation of the game being played.
+    \par
+    As a final word on the assignment as a whole, I feel that the overall program works with generally strong results, the program can correctly identify pieces and moves made in a video, as proven by the results output.  
 
-
-
-
+    
+    
 \end{document}
